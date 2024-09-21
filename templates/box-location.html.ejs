@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= box.name %> - Community Chest</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="/site.css">
+  <style>
+    .nav-links > * {
+        margin-right: 10px;
+    }
+    .request-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .request-text {
+      margin-right: 20px;
+    }
+    .fulfill-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .new-request-section {
+      text-align: center;
+    }
+    .new-request-section h3 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+    .clear-requests-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    }
+  </style>
+  
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>MHK Community Chest</h1>
+            </div>
+            <div class="nav-links">
+                
+                <% if (locals.user) { %>
+                    <span>Welcome, <%= user.name %></span>
+                    <a href="/">Home</a>
+                    
+                    <% if (user.admin == 1) { %>
+                      <a href="/users">Manage Users</a>
+                      <a href="/box-locations/new">Add Box</a>
+                    <% } %>
+
+                    <a href="/logout">Logout</a>
+
+                <% } else { %>
+                    <a href="/">Home</a>
+                    <a href="/login">Login</a>
+                    <a href="/signup">Sign Up</a>
+                <% } %>
+            </div>
+        </nav>
+    </header>
+    
+    <h1>Box Location: <%= box.name %></h1>
+    <div id="map" style="height: 400px;"></div>
+
+      <h2>Requests for this Box:</h2>
+        <% if (locals.user && user.admin == 1) { %>
+            <form action="/box-locations/<%= box.id %>/clear-requests" method="POST">
+            <button type="submit" class="clear-requests-button">Clear Requests</button>
+            </form>
+        <% } %>
+        <ul>
+            <% requests.forEach(request => { %>
+            <li class="request-item">
+                <span class="request-text" style="<%= request.fulfilled ? 'text-decoration: line-through;' : '' %>">
+                <%= request.request %> - <%= request.fulfilled ? 'Fulfilled' : 'Unfulfilled' %>
+                </span>
+                <% if (!request.fulfilled && locals.user) { %>
+                <form method="POST" action="box-locations/<%= box.id %>/requests/<%= request.id %>/fulfill">
+                    <button type="submit" class="fulfill-button">Fulfill</button>
+                </form>
+                <% } %>
+            </li>
+            <% }); %>
+        </ul>
+
+        <% if (locals.user) { %>
+            <div class="new-request-section">
+            <h3>Submit a New Request</h3>
+            <form action="/box-locations/<%= box.id %>/requests" method="POST">
+                <label for="request">Request:</label>
+                <input type="text" id="request" name="request" required>
+                <button type="submit">Submit</button>
+            </form>
+            </div>
+        <% } else { %>
+            <p>Please <a href="/login">login</a> or <a href="/signup">sign up</a> to submit or fulfill a request.</p>
+        <% } %>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([<%= box.lat %>, <%= box.lng %>], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        var marker = L.marker([<%= box.lat %>, <%= box.lng %>]).addTo(map);
+        marker.bindPopup("<b><%= box.name %></b>").openPopup();
+    </script>
+</body>
+
+</html>

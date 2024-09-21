@@ -1,0 +1,17 @@
+<h2>Sign Up</h2>
+<form action="/signup" method="POST">
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required></input>
+
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required></input>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required></input>
+
+  <label for="passwordConfirmation">Password Confirmation:</label>
+  <input type="passwordConfirmation" id="passwordConfirmation" name="passwordConfirmation" required></input>
+
+  <button type="submit">Sign Up</button>
+  <p> <%= errorMessage %> </p>
+</form>

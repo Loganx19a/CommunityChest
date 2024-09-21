@@ -1,0 +1,133 @@
+/* style rules for home page */
+body {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+header {
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 3em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-links span {
+  margin-right: 10px;
+}
+
+.nav-links a {
+  margin-left: 10px;
+  text-decoration: none;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* Login and Sign Up pages */
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#fulfill {
+  display: flex;
+  flex-direction: row;
+  color: red;
+}
+
+label {
+  margin-top: 10px;
+}
+
+input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Card layout */
+#cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 20px;
+  margin-top: 20px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #fafafa;
+}
+
+.card-content {
+  text-align: center;
+  font-family: sans-serif;
+  padding: 10px;
+}
+
+.map {
+  height: 180px;
+  width: 100%;
+}
+
+/* Media queries */
+@media only screen and (max-width: 840px) {
+  .nav-links {
+    justify-content: flex-end;
+    padding-top: 10px;
+  }
+}
+
+@media only screen and (max-width: 620px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .nav-links {
+    margin-top: 10px;
+    justify-content: center;
+  }
+
+  form {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
